@@ -65,7 +65,7 @@ public class SyntaxHighlightEditor extends EditText implements EditTextInterface
     public boolean dirty = false;
     private CRC32 mCRC32;
 
-	//Colors
+    //Colors
     private static final int COLOR_ERROR = 0x80ff0000;
     private static final int COLOR_NUMBER = 0xffBC0000;
     private static final int COLOR_KEYWORD = 0xff0096FF;
@@ -74,7 +74,7 @@ public class SyntaxHighlightEditor extends EditText implements EditTextInterface
     private static final int COLOR_BOOLEANS = 0xffBC0000;
     private static final int COLOR_STRINGS = 0xffBC0000;
 
-	//Words
+    //Words
     private static final Pattern line = Pattern.compile(".*\\n");
     private static final Pattern booleans = Pattern.compile(
 		"\\b(true|false|null|undefined|boolean)\\b");

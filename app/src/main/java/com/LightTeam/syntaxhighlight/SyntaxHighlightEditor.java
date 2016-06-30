@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 
 public class SyntaxHighlightEditor extends EditText implements EditTextInterface, View.OnKeyListener, GestureDetector.OnGestureListener {
-	//Настройка редактора
+
     public boolean SHOW_LINE_NUMBERS = true;
     public boolean SYNTAX_HIGHLIGHTING = true;
     public float TEXT_SIZE = 14;

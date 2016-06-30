@@ -31,14 +31,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 
-public class SyntaxHighlightEditor extends EditText implements EditTextInterface, View.OnKeyListener, GestureDetector.OnGestureListener
-{
+public class SyntaxHighlightEditor extends EditText implements EditTextInterface, View.OnKeyListener, GestureDetector.OnGestureListener {
 	//Настройка редактора
-	public boolean SHOW_LINE_NUMBERS = true;
-	public boolean SYNTAX_HIGHLIGHTING = true;
-	public float TEXT_SIZE = 14;
-	public boolean WORDWRAP = false;
-	public boolean FLING_TO_SCROLL = true;
+    public boolean SHOW_LINE_NUMBERS = true;
+    public boolean SYNTAX_HIGHLIGHTING = true;
+    public float TEXT_SIZE = 14;
+    public boolean WORDWRAP = false;
+    public boolean FLING_TO_SCROLL = true;
 
     private Context mContext;
     protected Paint mPaintNumbers;
@@ -214,8 +213,7 @@ public class SyntaxHighlightEditor extends EditText implements EditTextInterface
     public boolean onSingleTapUp(MotionEvent e) {
         if (isEnabled()) {
             ((InputMethodManager) getContext().getSystemService(
-				Context.INPUT_METHOD_SERVICE)).showSoftInput(this,
-															 InputMethodManager.SHOW_IMPLICIT);
+		        Context.INPUT_METHOD_SERVICE)).showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
         }
         return true;
     }
@@ -333,39 +331,40 @@ public class SyntaxHighlightEditor extends EditText implements EditTextInterface
     public void init() {
         mCRC32 = new CRC32();
         setFilters(new InputFilter[]{
-					   new InputFilter() {
-						   @Override
-						   public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend ) {
-							   if(modified &&
-								  end-start == 1 &&
-								  start < source.length() &&
-								  dstart < dest.length()) {
-								   char c = source.charAt(start);
-								   if(c == '\n')
-									   return autoIndent(source, start, end, dest, dstart, dend);
-							   }
-							   return source;
-						   }
-					   }});
+		       new InputFilter() {
+				@Override
+				public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+					if(modified &&
+						end-start == 1 &&
+						start < source.length() &&
+						dstart < dest.length()) {
+						char c = source.charAt(start);
+						if(c == '\n')
+							return autoIndent(source, start, end, dest, dstart, dend);
+					}
+					return source;
+				}
+			}
+        });
 
         addTextChangedListener(new TextWatcher() {
-				@Override
-				public void onTextChanged(CharSequence s, int start, int before, int count) {
-				}
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+		}
 
-				@Override
-				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				}
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		}
 
-				@Override
-				public void afterTextChanged(Editable e) {
-					cancelUpdate();
-					if(!modified)
-						return;
-					dirty = true;
-					updateHandler.postDelayed(updateRunnable, updateDelay );
-				}
-			});
+		@Override
+		public void afterTextChanged(Editable e) {
+			cancelUpdate();
+			if(!modified)
+				return;
+			dirty = true;
+			updateHandler.postDelayed(updateRunnable, updateDelay );
+		}
+	});
     }
 
     @Override
@@ -425,77 +424,76 @@ public class SyntaxHighlightEditor extends EditText implements EditTextInterface
 
     private Editable highlight(Editable e) {
         try {
-            clearSpans(e);
-            if(e.length() == 0)
-                return e;
-            if(errorLine > 0)
-            {
+                clearSpans(e);
+                if(e.length() == 0)
+                    return e;
+                if(errorLine > 0) {
                 Matcher m = line.matcher(e);
+                
                 for(int n = errorLine; n-- > 0 && m.find(););
                 e.setSpan(
-					new BackgroundColorSpan(COLOR_ERROR),
-					m.start(),
-					m.end(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-            for(Matcher m = numbers.matcher(e); m.find();)
+			new BackgroundColorSpan(COLOR_ERROR),
+			m.start(),
+			m.end(),
+			Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                for(Matcher m = numbers.matcher(e); m.find();)
                 e.setSpan(
-					new ForegroundColorSpan(COLOR_NUMBER),
-					m.start(),
-					m.end(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			new ForegroundColorSpan(COLOR_NUMBER),
+			m.start(),
+			m.end(),
+			Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-			for(Matcher m = keywords.matcher(e); m.find();)
+		for(Matcher m = keywords.matcher(e); m.find();)
                 e.setSpan(
-					new ForegroundColorSpan(COLOR_KEYWORD),
-					m.start(),
-					m.end(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			new ForegroundColorSpan(COLOR_KEYWORD),
+			m.start(),
+			m.end(),
+			Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            for(Matcher m = bltns.matcher(e); m.find();)
+                for(Matcher m = bltns.matcher(e); m.find();)
                 e.setSpan(
-					new ForegroundColorSpan(COLOR_BLTN),
-					m.start(),
-					m.end(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			new ForegroundColorSpan(COLOR_BLTN),
+			m.start(),
+			m.end(),
+			Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            for(Matcher m = booleans.matcher(e); m.find();)
+                for(Matcher m = booleans.matcher(e); m.find();)
                 e.setSpan(
-					new ForegroundColorSpan(COLOR_BOOLEANS),
-					m.start(),
-					m.end(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			new ForegroundColorSpan(COLOR_BOOLEANS),
+			m.start(),
+			m.end(),
+			Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            for(Matcher m = symbols.matcher(e); m.find();)
+                for(Matcher m = symbols.matcher(e); m.find();)
                 e.setSpan(
-					new ForegroundColorSpan(COLOR_COMMENT),
-					m.start(),
-					m.end(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			new ForegroundColorSpan(COLOR_COMMENT),
+			m.start(),
+			m.end(),
+			Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            for(Matcher m = comments.matcher(e); m.find();)
+                for(Matcher m = comments.matcher(e); m.find();)
                 e.setSpan(
-					new ForegroundColorSpan(COLOR_COMMENT),
-					m.start(),
-					m.end(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			new ForegroundColorSpan(COLOR_COMMENT),
+			m.start(),
+			m.end(),
+			Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            for(Matcher m = general_strings.matcher(e); m.find();)
+                for(Matcher m = general_strings.matcher(e); m.find();)
                 e.setSpan(
-					new ForegroundColorSpan(COLOR_STRINGS),
-					m.start(),
-					m.end(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        catch(Exception ex) {
+			new ForegroundColorSpan(COLOR_STRINGS),
+			m.start(),
+			m.end(),
+			Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } catch(Exception ex) {
         }
         return e;
     }
 
     private void clearSpans(Editable e){
-		{
+	{
             ForegroundColorSpan spans[] = e.getSpans(
-				0, e.length(), ForegroundColorSpan.class);
+			0, e.length(), ForegroundColorSpan.class);
             for(int n = spans.length; n-- > 0;)
                 e.removeSpan(spans[n]);
         }
@@ -521,13 +519,13 @@ public class SyntaxHighlightEditor extends EditText implements EditTextInterface
             if(c != ' ' && c != '\t') {
                 if(!dataBefore) {
                     if(c == '{' ||
-					   c == '+' ||
-					   c == '-' ||
-					   c == '*' ||
-					   c == '/' ||
-					   c == '%' ||
-					   c == '^' ||
-					   c == '=')
+			c == '+' ||
+			c == '-' ||
+			c == '*' ||
+			c == '/' ||
+			c == '%' ||
+			c == '^' ||
+			c == '=')
                         --pt;
                     dataBefore = true;
                 }

@@ -1,4 +1,4 @@
-package com.LightTeam.syntaxhighlight;
+package com.LightTeam.syntaxhighlight.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;
